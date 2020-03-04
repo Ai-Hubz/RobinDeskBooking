@@ -2,6 +2,7 @@ from selenium import webdriver
 from time import sleep
 from secrets import username, password
 from datetime import datetime
+from _datetime import timedelta
 
 
 class RobinDeskBookingBot():
@@ -38,17 +39,20 @@ class RobinDeskBookingBot():
             start_date_value, '%B %d, %Y')
 
         # if it is Monday/Saturday/Sunday can just book the current day
-        if(datetime_object.weekday() == 0 or datetime_object.weekday() == 5 or datetime_object.weekday() == 6):
-            # book current day
-            self.select_desk()
+        # if(datetime_object.weekday() == 0 or datetime_object.weekday() == 5 or datetime_object.weekday() == 6):
+        # book current day
+        self.select_desk()
 
         # if it is a day between monday and thursday we can also book the following day
-        if(datetime_object.weekday() < 4):
-            # increase days until sunday is reached
-            datetime_object += datetime.timedelta(days=1)
-            datetime_string = '{:%B %d, %Y}'.format(datetime_object)
-            start_date_input.setAttribute('value', datetime_string)
-            self.select_desk()
+        # if(datetime_object.weekday() < 4):
+        #     # initiate focus on back page to remove any popups
+        #     self.driver.refresh()
+        #     sleep(10)
+        #     # increase days until sunday is reached
+        #     datetime_object += timedelta(days=1)
+        #     datetime_string = '{:%B %d, %Y}'.format(datetime_object)
+        #     start_date_input.send_keys(datetime_string)
+        #     self.select_desk()
 
     def remove_popup(self):
         # time to get rid of that pesky got it popup
@@ -59,7 +63,7 @@ class RobinDeskBookingBot():
     # selects my desk using xpath expressions
     def select_desk(self):
         desk_button = self.driver.find_element_by_xpath(
-            '//*[@id="content"]/div/div[2]/workplace-people-search/div/div[5]/div[5]/div')
+            '//*[@id="content"]/div/div[2]/workplace-people-search/div/div[6]/div[5]/div')
         desk_button.click()
         reserve_desk_btn = self.driver.find_element_by_xpath(
             '//*[@id="content-container"]/div/ui-view/desks-search/div[2]/div[1]/workplace-desks/div/div/div[4]/div[2]/div/div/div/div/div/div[2]/button')
